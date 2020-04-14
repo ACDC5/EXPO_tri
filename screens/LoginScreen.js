@@ -41,34 +41,64 @@ export class  LoginScreen extends Component {
                     </View>
                 </TouchableOpacity>
 
+
+                <Text style={{marginTop:10}}>
+                    结果:{this.state.errInfo}
+                </Text>
+
             </View>
         );
     }
 
     out() {
+        const objectId = 1000;
+        const actionId = 1005;
+        const screenWidth = 1920;
+        const ott= '';
+        const screenHeight= 1080;
+        const screenDPI = 96;
+        const contentType = '/html/en';
+        const languageId = 1;
+        const ieFlag = 0;
+        const ExtReqURL = '';
+
+
+
         const cstUrl = 'http://intalenttech.cn/Authenticate.srv';
         fetch(cstUrl, {
             method: "POST",
             headers: {
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                // "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Host": "intalenttech.cn",
-                "Connection":"keep-alive",
+                // "Connection":"keep-alive",
                 "Referer":"http://intalenttech.cn/html/en/default/login/loginMain.jsp",
                 "User-Agent":"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36",
             },
-            body:'USERNAME=' + this.state.userName + 'PASSWORD=' + this.state.password,
+            body: 'objectId&'+objectId +
+                  'actionId&'+actionId +
+                  'screenWidth&'+screenWidth +
+                  'ott&'+ott +
+                  'screenHeight&'+screenHeight +
+                  'screenDPI&'+screenDPI +
+                  'contentType&'+contentType +
+                  'languageId&'+languageId +
+                  'ieFlag&'+ieFlag +
+                  'ExtReqURL&'+ExtReqURL +
+                  'USERNAME=' + this.state.userName + '&PASSWORD=' + this.state.password,
         })
             .then((response) =>JSON.stringify(response)) // 从对象中字符串化返回的数据
 
             .then((responseData) => {       // 获取格式化后的数据
                 //解析成json对象
-                console.log('aa####'+responseData)//返回object
+                console.log('aa####'+responseData+1)//返回object
                 const final = JSON.parse(responseData,);
                 console.log(typeof final + '-----------' +final)
+                this.setState({errInfo:final})
             })
             .catch((error) => { // 错误处理
                 console.log(error)
+                this.setState({errInfo:error})
             })
         console.log(this.state.userName);
         console.log(this.state.password);
